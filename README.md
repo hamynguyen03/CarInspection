@@ -1,24 +1,91 @@
 # Car Inspection App
 
-This project consists of two parts:
-1. **Backend**: A Spring Boot application running on Java, which serves the API for car inspections.
-2. **Frontend**: A React application that allows users (car owners) to interact with the backend to view their car inspection results and report new inspections.
+This application is designed for car inspectors to report and manage car inspection results efficiently. The app allows inspectors to add new car inspections, update inspection criteria, and view detailed inspection reports with a clear status indication for each car.
 
-## Prerequisites for backend 
+## Features
 
-### Backend Setup (Spring Boot)
+### Core Functionality
+1. **Car Inspection Management**:
+   - **View Car List**: View the list of cars and their inspection statuses.
+   - **Add New Car Inspection**: Begin a new inspection for a car by entering its car plate. If the car is already in the database, an error will be shown.
+   - **Update Inspection Criteria**: Inspectors can mark criteria as passed or failed. Failed criteria require a note.
+   - **Inspection Status Tracking**: The app displays inspection status based on criteria results:
+     - `0` - Not inspected yet
+     - `1` - Inspecting (partial criteria met)
+     - `2` - Inspected (all criteria met)
+
+2. **Inspection Criteria**:
+   - Each inspection includes up to 5 predefined criteria, each with:
+     - **Is_good**: A boolean field indicating if the criterion passed.
+     - **Note**: Required if `Is_good` is `false`.
+   - Inspectors can modify criteria as needed.
+
+### Pages
+
+- **Page 1: Car Inspection Results**
+   - View previously inspected cars, showing each car’s inspection status and results for individual criteria.
+   - Failed criteria display an attached note for additional details.
+   - Add a new car inspection to the system.
+  
+- **Page 2: Report Car Inspection**
+   - Enter a car’s plate number to add a new car for inspection.
+   - Update inspection criteria and add notes for any criteria that fail.
+   - Submit the inspection report once all criteria have been reviewed.
+
+## Technology Stack
+
+- **Backend**: Java (Spring Boot) with MySQL database
+  - API endpoints support car data retrieval, creation, and update for inspection purposes.
+- **Frontend**: React for interactive inspection management.
+
+## Setup and Usage
+
+### Prerequisites
+
+**Backend Requirements**:
 - Java 21
-- Gradle (to manage dependencies)
-- IntelliJ IDEA (or any preferred IDE)
-- Required dependencies: Lombok, Spring Web, Spring Data JPA, My SQL Driver 
+- Gradle for dependency management
+- An IDE (e.g., IntelliJ IDEA)
+- Dependencies: Lombok, Spring Web, Spring Data JPA, MySQL Driver
 
-**Open Project in IntelliJ**:
-   - Open IntelliJ IDEA.
-   - Select "Open" from the welcome screen.
-   - Navigate to the cloned project folder and select it.
+**Frontend Requirements**:
+- Node.js (for running the React app)
+- Preferred text editor (e.g., VS Code)
 
-**Run the Backend**:
-   - Create a new Application.
-   - Right-click and select `Run 'CarInspectionApplication'`.
-   - This will start the backend API on `http://localhost:8080`.
-   - If there is a problem running the application, go to Setting -> Buid, Execution, Deployment -> Buid Tools -> Gradle -> Build and Run -> Select ItelliJ IDEA for both "Build and run using:" and "Run tests using:".
+### Installation
+
+1. **Backend Setup**:
+   - Clone the repository.
+   - Open the project in IntelliJ IDEA and configure it to use IntelliJ for building and running.
+   - Run `CarInspectionApplication` to start the API on `http://localhost:8080`.
+
+2. **Frontend Setup**:
+   - In the `frontend` directory, run `npm install` to install dependencies.
+   - Start the React app with `npm start`.
+
+## API Endpoints
+
+### Page 1: Car Inspection Results
+- **GET /cars**: Retrieve the list of cars and their inspection statuses.
+  - **Endpoint**: `http://localhost:8080/cars`
+
+### Page 2: Report Car Inspection
+- **POST /car-inspections/{carName}/{id}?isGood={isGood}&note={note}**: Add a new inspection result for a specific car, with inspection criteria details.
+  - **Endpoint**: `http://localhost:8080/car-inspections/${carName}/${id}?isGood=${isGood}&note=${encodeURIComponent(note)}`
+  - **Parameters**:
+    - `carName`: The name or plate number of the car.
+    - `id`: Inspection criterion ID.
+    - `isGood`: Boolean indicating if the criterion was met.
+    - `note`: Description of the issue (required if `isGood` is false).
+
+- **GET /cars/{carName}**: Retrieve the inspection results for a specific car.
+  - **Endpoint**: `http://localhost:8080/cars/${carName}`
+  - **Parameter**:
+    - `carName`: The name or plate number of the car.
+
+## Inspection Status Rules
+
+The car’s inspection status is determined based on the criteria met:
+- **Status 2**: All 5 criteria met
+- **Status 1**: Between 1-4 criteria met
+- **Status 0**: No criteria met
