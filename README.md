@@ -10,9 +10,9 @@ This application is designed for car inspectors to report and manage car inspect
    - **Add New Car Inspection**: Begin a new inspection for a car by entering its car plate. If the car is already in the database, an error will be shown.
    - **Update Inspection Criteria**: Inspectors can mark criteria as passed or failed. Failed criteria require a note.
    - **Inspection Status Tracking**: The app displays inspection status based on criteria results:
-     - `0` - Not inspected yet
-     - `1` - Inspecting (partial criteria met)
-     - `2` - Inspected (all criteria met)
+     - `0` - Not inspected yet (No criteria met)
+     - `1` - Inspecting (Between 1-4 criteria met)
+     - `2` - Inspected (All criteria met)
 
 2. **Inspection Criteria**:
    - Each inspection includes up to 5 predefined criteria, each with:
@@ -82,10 +82,3 @@ This application is designed for car inspectors to report and manage car inspect
   - **Endpoint**: `http://localhost:8080/cars/${carName}`
   - **Parameter**:
     - `carName`: The name or plate number of the car.
-
-## Inspection Status Rules
-
-The car’s inspection status is determined based on the criteria met:
-- **Status 2**: All 5 criteria met
-- **Status 1**: Between 1-4 criteria met
-- **Status 0**: No criteria met
